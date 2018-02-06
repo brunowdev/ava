@@ -259,10 +259,10 @@ test('fail-fast mode - multiple files', t => {
 			t.ok(api.options.failFast);
 			t.strictDeepEqual(tests, [{
 				ok: true,
-				title: 'fails › first pass'
+				title: `fails ${figures.pointerSmall} first pass`
 			}, {
 				ok: false,
-				title: 'fails › second fail'
+				title: `fails ${figures.pointerSmall} second fail`
 			}]);
 			t.is(result.passCount, 1);
 			t.is(result.failCount, 1);
