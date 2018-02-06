@@ -247,6 +247,7 @@ test('fail-fast mode - multiple files', t => {
 				ok: !test.error,
 				title: test.title
 			});
+			tests.sort((a, b) => a.title > b.title ? 1 : -1);
 		});
 	});
 
@@ -298,7 +299,7 @@ test('fail-fast mode - crash', t => {
 			t.strictDeepEqual(tests, []);
 			t.is(errors.length, 1);
 			t.is(errors[0].name, 'AvaError');
-			t.is(errors[0].message, 'test/fixture/fail-fast/crash/crashes.js exited with a non-zero exit code: 1');
+			t.is(errors[0].message, `${path.join('test', 'fixture', 'fail-fast', 'crash', 'crashes.js')} exited with a non-zero exit code: 1`);
 			t.is(result.passCount, 0);
 			t.is(result.failCount, 0);
 		});
