@@ -387,29 +387,30 @@ test('options.bail will bail out', t => {
 test('options.bail will bail out (async)', t => {
 	t.plan(1);
 
-	const tests = [];
-	return promiseEnd(new Runner({bail: true}), runner => {
+	let bailed = false;
+	promiseEnd(new Runner({bail: true}), runner => {
 		runner.chain.cb('cb', a => {
 			setTimeout(() => {
-				tests.push(1);
 				a.fail();
 				a.end();
 			}, 100);
 			a.pass();
 		});
 
+		// Note that because the first test is asynchronous, the second test is
+		// run and the `setTimeout` call still occurs. The runner should end though
+		// as soon as the first test fails.
+		// See the `bail + serial` test below for comparison
 		runner.chain.cb('cb 2', a => {
 			setTimeout(() => {
-				tests.push(2);
+				t.true(bailed);
+				t.end();
 				a.end();
 			}, 300);
 			a.pass();
 		});
 	}).then(() => {
-		t.strictDeepEqual(tests, [1]);
-		// Note that the second `setTimeout` call still occurs, but the test run
-		// ends as soon as the first test fails.
-		// See the `bail + serial` test below for comparison
+		bailed = true;
 	});
 });
 
