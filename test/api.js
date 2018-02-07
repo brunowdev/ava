@@ -247,7 +247,6 @@ test('fail-fast mode - multiple files', t => {
 				ok: !test.error,
 				title: test.title
 			});
-			tests.sort((a, b) => a.title > b.title ? 1 : -1);
 		});
 	});
 
